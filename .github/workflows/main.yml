@@ -48,5 +48,5 @@ jobs:
           script: |
             cd ~/api-tcc
             yarn
-            npx sequelize db:migrate
+            yarn sequelize db:migrate
             pm2 restart api-tcc
