@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+    
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.5.0
+        with:
+          node-version: 16.x
+      
+      # Instalar dependencias do yarn
+      - name: Install dependencies
+        run: yarn
+      
+      # Executar a build
+      - name: Run build
+        run: yarn build
+        
+      # Copiar pasta dist para dentro da Digital Ocean
+      - name: Copy dist to Digital Ocean
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          source: ".,!node_modules"
+          target: "api-tcc"
+      
+      # Rodar scripts de produção no servidor da Digital Ocean
+      - name: Run production scripts on Digital Ocean
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/api-tcc
+            npm i
+            yarn sequelize db:migrate
+            pm2 restart api-tcc
