@@ -35,7 +35,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           source: ".,!node_modules"
-          target: "test"
+          target: "api-tcc"
       
       # Rodar scripts de produção no servidor da Digital Ocean
       - name: Run production scripts on Digital Ocean
