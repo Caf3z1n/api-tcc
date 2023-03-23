@@ -47,6 +47,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/api-tcc
-            yarn
+            npm i
             yarn sequelize db:migrate
             pm2 restart api-tcc
