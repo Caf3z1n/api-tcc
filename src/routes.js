@@ -12,6 +12,8 @@ import PalestraController from './app/controllers/PalestraController';
 import FileController from './app/controllers/FileController';
 import UserController from './app/controllers/UserController';
 import EspectadorPalestraController from './app/controllers/EspectadorPalestraController';
+import HomeEventosController from './app/controllers/HomeEventosController';
+import AdminPalestrasController from './app/controllers/AdminPalestrasController';
 
 import authMiddleware from './app/middlewares/auth';
 import palestranteMiddleware from './app/middlewares/palestrante';
@@ -22,14 +24,20 @@ const upload = multer(multerConfig);
 
 /* SEM AUTENTICAÇÃO */
 routes.get('/', (req, res) => res.send('API TCC funcionando!'));
+routes.post('/admin', AdminController.store);
 
 routes.post('/espectador', EspectadorController.store);
 routes.post('/solicitar-palestrante', SolicitacaoPalestranteController.store);
 routes.post('/session', SessionController.store);
 
 routes.get('/eventos', EventoControler.index);
+routes.get('/home-eventos', HomeEventosController.index);
+
+routes.post('/files', upload.single('file'), FileController.store);
 
 /* ESPECTADOR */ routes.use(authMiddleware);
+routes.get('/me', SessionController.index);
+
 routes.post('/espectador-palestra', EspectadorPalestraController.create);
 routes.get('/espectador-palestra', EspectadorPalestraController.index);
 routes.get('/palestras/:palestraId', PalestraController.show);
@@ -40,8 +48,6 @@ routes.put('/palestras/:palestraId', PalestraController.update);
 routes.get('/palestras', PalestraController.index);
 routes.delete('/palestras/:palestraId', PalestraController.delete);
 routes.post('/palestras/:palestraId', PalestraController.create);
-
-routes.post('/files', upload.single('file'), FileController.store);
 
 /* ADMIN */ routes.use(adminMiddleware);
 routes.put(
@@ -62,5 +68,6 @@ routes.put(
 );
 
 routes.get('/users', UserController.index);
+routes.get('/admin-palestras', AdminPalestrasController.index);
 
 export default routes;

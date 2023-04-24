@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 
 import Palestra from '../models/Palestra';
 import Evento from '../models/Evento';
+import User from '../models/User';
+import File from '../models/File';
 
 class SolicitacaoPalestraController {
   async store(req, res) {
@@ -57,6 +59,22 @@ class SolicitacaoPalestraController {
       where: {
         ativo: null,
       },
+      include: [
+        {
+          model: User,
+          as: 'palestrante',
+          include: [
+            {
+              model: File,
+              as: 'foto',
+            },
+          ],
+        },
+        {
+          model: Evento,
+          as: 'evento',
+        },
+      ],
     });
 
     return res.json(palestras);

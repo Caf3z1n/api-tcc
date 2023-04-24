@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import { isBefore } from 'date-fns';
 
 class Palestra extends Model {
   static init(sequelize) {
@@ -12,6 +13,23 @@ class Palestra extends Model {
         link: Sequelize.STRING,
         tipo: Sequelize.INTEGER,
         ativo: Sequelize.BOOLEAN,
+        status: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            switch (this.ativo) {
+              case true:
+                if (isBefore(new Date(), this.data_fim)) {
+                  return 'Ativo';
+                }
+                return 'Já aconteceu';
+
+              case false:
+                return 'Cancelado';
+              default:
+                return 'Aguardando aprovação';
+            }
+          },
+        },
       },
       {
         sequelize,

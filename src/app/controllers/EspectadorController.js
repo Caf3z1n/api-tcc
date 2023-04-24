@@ -26,7 +26,7 @@ class EspectadorController {
     });
 
     if (userExists) {
-      return res.status(400).json({ error: 'Nome de usuário já cadastrado' });
+      return res.status(200).json({ error: 'Email já cadastrado' });
     }
 
     const espectador = await User.create({

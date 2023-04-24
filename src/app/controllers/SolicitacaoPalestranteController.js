@@ -29,7 +29,7 @@ class SolicitacaoPalestranteController {
     });
 
     if (userExists) {
-      return res.status(400).json({ error: 'Nome de usuário já cadastrado' });
+      return res.status(200).json({ error: 'Email já cadastrado' });
     }
 
     const palestranteExists = await SolicitacaoPalestrante.findOne({
@@ -86,7 +86,7 @@ class SolicitacaoPalestranteController {
   }
 
   async index(req, res) {
-    const { paginaAtual = 1, itensPorPagina = 50 } = req.query;
+    const { paginaAtual = 1, itensPorPagina = 10 } = req.query;
 
     const palestrantes = await SolicitacaoPalestrante.findAll({
       limit: itensPorPagina,

@@ -1,8 +1,10 @@
-import { Op } from 'sequelize';
 import { isBefore, isAfter, differenceInMinutes } from 'date-fns';
 
 import Palestra from '../models/Palestra';
 import EspectadorPalestra from '../models/EspectadorPalestra';
+import Evento from '../models/Evento';
+import File from '../models/File';
+import User from '../models/User';
 
 class PalestraController {
   async update(req, res) {
@@ -29,24 +31,47 @@ class PalestraController {
   }
 
   async index(req, res) {
-    if (req.userNivel !== 0) {
-      const palestras = await Palestra.findAll({
-        where: {
-          id_palestrante: req.userId,
-          ativo: { [Op.ne]: null },
-        },
-      });
-
-      return res.json(palestras);
-    }
+    const { paginaAtual = 1, itensPorPagina = 10 } = req.query;
 
     const palestras = await Palestra.findAll({
+      limit: itensPorPagina,
+      offset: (paginaAtual - 1) * itensPorPagina,
+      order: [['data_inicio', 'DESC']],
       where: {
-        ativo: { [Op.ne]: null },
+        id_palestrante: req.userId,
+      },
+      include: [
+        {
+          model: Evento,
+          as: 'evento',
+        },
+        {
+          model: User,
+          as: 'palestrante',
+          include: [
+            {
+              model: File,
+              as: 'foto',
+            },
+          ],
+        },
+      ],
+    });
+
+    const quantidadeTotalDeItens = await Palestra.count({
+      where: {
+        id_palestrante: req.userId,
       },
     });
 
-    return res.json(palestras);
+    return res.json({
+      palestras,
+      paginacao: {
+        paginaAtual,
+        itensPorPagina,
+        quantidadeTotalDeItens,
+      },
+    });
   }
 
   async delete(req, res) {

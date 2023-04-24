@@ -37,7 +37,18 @@ class SessionController {
         email,
         nivel,
       },
-      token: jwt.sign({ id }, authConfig.secret),
+      token: jwt.sign({ id, nivel }, authConfig.secret),
+    });
+  }
+
+  async index(req, res) {
+    const { id, nome, email, nivel } = await User.findByPk(req.userId);
+
+    return res.json({
+      id,
+      nome,
+      email,
+      nivel,
     });
   }
 }
