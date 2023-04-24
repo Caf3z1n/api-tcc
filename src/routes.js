@@ -24,7 +24,6 @@ const upload = multer(multerConfig);
 
 /* SEM AUTENTICAÇÃO */
 routes.get('/', (req, res) => res.send('API TCC funcionando!'));
-routes.post('/admin', AdminController.store);
 
 routes.post('/espectador', EspectadorController.store);
 routes.post('/solicitar-palestrante', SolicitacaoPalestranteController.store);
@@ -69,5 +68,6 @@ routes.put(
 
 routes.get('/users', UserController.index);
 routes.get('/admin-palestras', AdminPalestrasController.index);
+routes.post('/admin', AdminController.store);
 
 export default routes;
