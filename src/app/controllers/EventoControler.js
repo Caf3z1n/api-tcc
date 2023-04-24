@@ -54,9 +54,6 @@ class EventoController {
           model: Palestra,
           as: 'palestras',
           order: [['data_inicio']],
-          where: {
-            ativo: true,
-          },
           include: [
             {
               model: User,
