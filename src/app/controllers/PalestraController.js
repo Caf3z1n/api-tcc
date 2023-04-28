@@ -85,7 +85,7 @@ class PalestraController {
 
     if (
       (palestra.id_palestrante !== req.userId && req.userNivel !== 0) ||
-      palestra.ativo === null
+      palestra.ativo !== null
     ) {
       return res
         .status(400)

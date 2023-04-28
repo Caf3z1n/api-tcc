@@ -11,13 +11,14 @@ class AdminController {
       confirmPassword: Yup.string().when('password', (password, field) =>
         password ? field.required().oneOf([Yup.ref('password')]) : field
       ),
+      nivel: Yup.number(),
     });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Falha na validação' });
     }
 
-    const { nome, email, password } = req.body;
+    const { nome, email, password, nivel = 0 } = req.body;
 
     const userExists = await User.findOne({
       where: {
@@ -26,17 +27,17 @@ class AdminController {
     });
 
     if (userExists) {
-      return res.status(400).json({ error: 'Email já cadastrado' });
+      return res.status(200).json({ error: 'Email já cadastrado' });
     }
 
-    const espectador = await User.create({
+    const usuario = await User.create({
       nome,
       email,
       password,
-      nivel: 0,
+      nivel,
     });
 
-    return res.json(espectador);
+    return res.json(usuario);
   }
 }
 

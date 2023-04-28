@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import * as Yup from 'yup';
 import { startOfDay, endOfDay } from 'date-fns';
 import { Op } from 'sequelize';
@@ -68,8 +69,48 @@ class EventoController {
       where,
     });
 
+    /*
+    eventos.map((evento) => {
+      if (evento.palestras.length >= 1) {
+        const palestrasAtivas = [];
+        evento.palestras.map((palestra) => {
+          if (palestra.ativo === true) {
+            palestrasAtivas.push(palestra);
+          }
+        });
+        console.warn(palestrasAtivas);
+      }
+    });
+    */
+
+    const eventosNovo = [];
+    eventos.map((evento) => {
+      if (evento.palestras.length >= 1) {
+        const palestras = [];
+        evento.palestras.map((palestra) => {
+          if (palestra.ativo === true) {
+            palestras.push(palestra);
+          }
+        });
+        evento.palestras = palestras;
+        eventosNovo.push({
+          id: evento.id,
+          nome: evento.nome,
+          descricao: evento.descricao,
+          local: evento.local,
+          data_inicio: evento.data_inicio,
+          data_fim: evento.data_fim,
+          createdAt: evento.createdAt,
+          updatedAt: evento.updatedAt,
+          palestras,
+        });
+      } else {
+        eventosNovo.push(evento);
+      }
+    });
+
     return res.json({
-      eventos,
+      eventos: eventosNovo,
       paginacao: {
         paginaAtual,
         itensPorPagina,
