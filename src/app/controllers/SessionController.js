@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
+import File from '../models/File';
 import authConfig from '../../config/auth';
 
 class SessionController {
@@ -42,13 +43,24 @@ class SessionController {
   }
 
   async index(req, res) {
-    const { id, nome, email, nivel } = await User.findByPk(req.userId);
+    const user = await User.findByPk(req.userId, {
+      include: [
+        {
+          model: File,
+          as: 'foto',
+        },
+      ],
+    });
+
+    const { id, nome, email, nivel } = user;
+    const { foto } = user.foto;
 
     return res.json({
       id,
       nome,
       email,
       nivel,
+      foto,
     });
   }
 }
