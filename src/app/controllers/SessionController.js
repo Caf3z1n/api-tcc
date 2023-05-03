@@ -56,7 +56,10 @@ class SessionController {
 
     let foto = null;
     if (user.foto) {
-      foto = user.foto.url;
+      foto = {
+        url: user.foto.url,
+        id: user.foto.id,
+      };
     }
     return res.json({
       id,
