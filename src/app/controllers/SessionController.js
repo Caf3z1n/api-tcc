@@ -53,14 +53,14 @@ class SessionController {
     });
 
     const { id, nome, email, nivel } = user;
-    const { foto } = user.foto;
+    const { url = null } = user.foto;
 
     return res.json({
       id,
       nome,
       email,
       nivel,
-      foto,
+      foto: url,
     });
   }
 }
