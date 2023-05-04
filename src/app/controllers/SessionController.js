@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
 import File from '../models/File';
+import SolicitacaoPalestrante from '../models/SolicitacaoPalestrante';
+
 import authConfig from '../../config/auth';
 
 class SessionController {
@@ -68,6 +70,41 @@ class SessionController {
       nivel,
       foto,
     });
+  }
+
+  async update(req, res) {
+    const user = await User.findByPk(req.userId);
+
+    const { email, oldPassword, password, confirmPassword } = req.body;
+
+    if (email && email !== user.email) {
+      const emailExists = await User.findOne({
+        where: {
+          email,
+        },
+      });
+
+      const emailPendingExists = await SolicitacaoPalestrante.findOne({
+        where: {
+          email,
+        },
+      });
+
+      if (emailExists || emailPendingExists) {
+        return res.json({ error: 'Email já cadastrado' });
+      }
+    }
+
+    if (oldPassword && !(await user.checkPassword(oldPassword))) {
+      return res.json({ error: 'Senha atual não está correta' });
+    }
+
+    if (password && password !== confirmPassword) {
+      return res.json({ error: 'Novas senhas não coincidem' });
+    }
+
+    await user.update(req.body);
+    return res.json(user);
   }
 }
 

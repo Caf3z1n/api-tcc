@@ -36,6 +36,7 @@ routes.post('/files', upload.single('file'), FileController.store);
 
 /* ESPECTADOR */ routes.use(authMiddleware);
 routes.get('/me', SessionController.index);
+routes.put('/me', SessionController.update);
 
 routes.post('/espectador-palestra', EspectadorPalestraController.create);
 routes.get('/espectador-palestra', EspectadorPalestraController.index);
