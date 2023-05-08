@@ -1,20 +1,13 @@
 import { isAfter } from 'date-fns';
 
-import User from '../models/User';
 import Palestra from '../models/Palestra';
 import EspectadorPalestra from '../models/EspectadorPalestra';
 import Evento from '../models/Evento';
+import User from '../models/User';
+import File from '../models/File';
 
 class EspectadorPalestraController {
   async create(req, res) {
-    const espectador = await User.findByPk(req.userId);
-
-    if (espectador.nivel !== 2) {
-      return res.status(400).json({
-        erro: 'É necessário ser um espectador para se inscrever em uma palestra',
-      });
-    }
-
     const { id_palestra } = req.body;
 
     const palestra = await Palestra.findByPk(id_palestra);
@@ -52,25 +45,57 @@ class EspectadorPalestraController {
   }
 
   async index(req, res) {
-    const palestras = await EspectadorPalestra.findAll({
-      order: [['id', 'DESC']],
-      where: {
-        id_espectador: req.userId,
-      },
+    const { paginaAtual = 1, itensPorPagina = 10 } = req.query;
+
+    const palestras = await Palestra.findAll({
+      limit: itensPorPagina,
+      offset: (paginaAtual - 1) * itensPorPagina,
+      order: [['data_inicio']],
       include: [
         {
-          model: Palestra,
-          as: 'palestra',
+          model: User,
+          as: 'palestrante',
           include: [
             {
-              model: Evento,
-              as: 'evento',
+              model: File,
+              as: 'foto',
             },
           ],
         },
+        {
+          model: Evento,
+          as: 'evento',
+        },
+        {
+          model: EspectadorPalestra,
+          as: 'espectador_palestra',
+          where: {
+            id_espectador: req.userId,
+          },
+        },
       ],
     });
-    return res.json(palestras);
+
+    const quantidadeTotalDeItens = await Palestra.count({
+      include: [
+        {
+          model: EspectadorPalestra,
+          as: 'espectador_palestra',
+          where: {
+            id_espectador: req.userId,
+          },
+        },
+      ],
+    });
+
+    return res.json({
+      palestras,
+      paginacao: {
+        paginaAtual,
+        itensPorPagina,
+        quantidadeTotalDeItens,
+      },
+    });
   }
 }
 

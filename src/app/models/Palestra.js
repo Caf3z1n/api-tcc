@@ -48,6 +48,10 @@ class Palestra extends Model {
       foreignKey: 'id_palestrante',
       as: 'palestrante',
     });
+    this.hasMany(models.EspectadorPalestra, {
+      foreignKey: 'id_palestra',
+      as: 'espectador_palestra',
+    });
   }
 }
 

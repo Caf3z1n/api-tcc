@@ -14,6 +14,7 @@ import UserController from './app/controllers/UserController';
 import EspectadorPalestraController from './app/controllers/EspectadorPalestraController';
 import HomeEventosController from './app/controllers/HomeEventosController';
 import AdminPalestrasController from './app/controllers/AdminPalestrasController';
+import PalestrasDisponiveisController from './app/controllers/PalestrasDisponiveisController';
 
 import authMiddleware from './app/middlewares/auth';
 import palestranteMiddleware from './app/middlewares/palestrante';
@@ -37,6 +38,9 @@ routes.post('/files', upload.single('file'), FileController.store);
 /* ESPECTADOR */ routes.use(authMiddleware);
 routes.get('/me', SessionController.index);
 routes.put('/me', SessionController.update);
+
+routes.get('/palestras-disponiveis', PalestrasDisponiveisController.index);
+routes.get('/palestras-aovivo', PalestrasDisponiveisController.show);
 
 routes.post('/espectador-palestra', EspectadorPalestraController.create);
 routes.get('/espectador-palestra', EspectadorPalestraController.index);
