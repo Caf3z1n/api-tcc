@@ -15,6 +15,7 @@ import EspectadorPalestraController from './app/controllers/EspectadorPalestraCo
 import HomeEventosController from './app/controllers/HomeEventosController';
 import AdminPalestrasController from './app/controllers/AdminPalestrasController';
 import PalestrasDisponiveisController from './app/controllers/PalestrasDisponiveisController';
+import CertificadoController from './app/controllers/CertificadoController';
 
 import authMiddleware from './app/middlewares/auth';
 import palestranteMiddleware from './app/middlewares/palestrante';
@@ -45,6 +46,8 @@ routes.get('/palestras-aovivo', PalestrasDisponiveisController.show);
 routes.post('/espectador-palestra', EspectadorPalestraController.create);
 routes.get('/espectador-palestra', EspectadorPalestraController.index);
 routes.get('/palestras/:palestraId', PalestraController.show);
+
+routes.post('/certificado/:id', CertificadoController.store);
 
 /* PALESTRANTE */ routes.use(palestranteMiddleware);
 routes.post('/solicitar-palestras', SolicitacaoPalestraController.store);

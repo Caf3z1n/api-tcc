@@ -1,4 +1,4 @@
-import { isAfter } from 'date-fns';
+import { isAfter, differenceInMinutes } from 'date-fns';
 
 import Palestra from '../models/Palestra';
 import EspectadorPalestra from '../models/EspectadorPalestra';
@@ -76,6 +76,42 @@ class EspectadorPalestraController {
       ],
     });
 
+    const palestras_final = [];
+
+    palestras.forEach((palestra) => {
+      const minutos = Math.abs(
+        differenceInMinutes(palestra.data_inicio, palestra.data_fim)
+      );
+
+      const { tempo_assistido } = palestra.espectador_palestra[0];
+
+      const porcentagem = Number(
+        ((tempo_assistido * 100) / minutos).toFixed(0)
+      );
+
+      const palestra_nova = {
+        status: palestra.status,
+        id: palestra.id,
+        nome: palestra.nome,
+        descricao: palestra.descricao,
+        local: palestra.local,
+        data_inicio: palestra.data_inicio,
+        data_fim: palestra.data_fim,
+        link: palestra.link,
+        tipo: palestra.tipo,
+        ativo: palestra.ativo,
+        createdAt: palestra.createdAt,
+        updatedAt: palestra.updatedAt,
+        id_evento: palestra.id_evento,
+        id_palestrante: palestra.id_palestrante,
+        palestrante: palestra.palestrante,
+        evento: palestra.evento,
+        porcentagem,
+        id_espectador_palestra: palestra.espectador_palestra[0].id,
+      };
+      palestras_final.push(palestra_nova);
+    });
+
     const quantidadeTotalDeItens = await Palestra.count({
       include: [
         {
@@ -89,7 +125,7 @@ class EspectadorPalestraController {
     });
 
     return res.json({
-      palestras,
+      palestras: palestras_final,
       paginacao: {
         paginaAtual,
         itensPorPagina,

@@ -24,6 +24,10 @@ class EspectadorPalestra extends Model {
       foreignKey: 'id_palestra',
       as: 'palestra',
     });
+    this.hasOne(models.Certificado, {
+      foreignKey: 'id_espectador_palestra',
+      as: 'certificado',
+    });
   }
 }
 

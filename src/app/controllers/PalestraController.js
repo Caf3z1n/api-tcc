@@ -134,6 +134,12 @@ class PalestraController {
         {
           model: Palestra,
           as: 'palestra',
+          include: [
+            {
+              model: User,
+              as: 'palestrante',
+            },
+          ],
         },
       ],
     });
@@ -163,6 +169,7 @@ class PalestraController {
       return res.json({
         message:
           'Primeiro acesso da palestra, começando a contar o tempo assistido...',
+        espectadorPalestra,
       });
     }
 

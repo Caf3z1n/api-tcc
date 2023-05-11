@@ -8,6 +8,7 @@ import Evento from '../app/models/Evento';
 import Palestra from '../app/models/Palestra';
 import File from '../app/models/File';
 import EspectadorPalestra from '../app/models/EspectadorPalestra';
+import Certificado from '../app/models/Certificado';
 
 const models = [
   User,
@@ -16,6 +17,7 @@ const models = [
   Palestra,
   File,
   EspectadorPalestra,
+  Certificado,
 ];
 
 class Database {
