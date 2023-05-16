@@ -8,8 +8,8 @@ class Certificado extends Model {
         url: {
           type: Sequelize.VIRTUAL,
           get() {
-            return `http://localhost:3334/certificados/${this.nome}.pdf`;
-            // return `https://api.tcc.eticasistemas.com.br/certificados/${this.nome}.pdf`;
+            // return `http://localhost:3334/certificados/${this.nome}.pdf`;
+            return `https://api.tcc.eticasistemas.com.br/certificados/${this.nome}.pdf`;
           },
         },
       },
