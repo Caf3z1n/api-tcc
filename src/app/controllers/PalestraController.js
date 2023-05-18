@@ -152,6 +152,16 @@ class PalestraController {
 
     const agora = new Date();
 
+    const depois = isAfter(agora, espectadorPalestra.palestra.data_inicio);
+    const antes = isBefore(agora, espectadorPalestra.palestra.data_fim);
+
+    if (!depois || !antes) {
+      return res.json({
+        tempo_contabilizado: 0,
+        espectadorPalestra,
+      });
+    }
+
     if (!espectadorPalestra.ultimo_acesso) {
       await espectadorPalestra.update({
         ultimo_acesso: agora,
