@@ -78,4 +78,6 @@ routes.get('/users', UserController.index);
 routes.get('/admin-palestras', AdminPalestrasController.index);
 routes.post('/admin', AdminController.store);
 
+routes.get('/certificados/:nome_certificado', CertificadoController.index);
+
 export default routes;

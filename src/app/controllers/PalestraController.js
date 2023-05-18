@@ -152,15 +152,6 @@ class PalestraController {
 
     const agora = new Date();
 
-    const depois = isAfter(agora, espectadorPalestra.palestra.data_inicio);
-    const antes = isBefore(agora, espectadorPalestra.palestra.data_fim);
-
-    if (!depois || !antes) {
-      return res.json({
-        message: 'O evento ainda não começou',
-      });
-    }
-
     if (!espectadorPalestra.ultimo_acesso) {
       await espectadorPalestra.update({
         ultimo_acesso: agora,
