@@ -36,6 +36,8 @@ routes.get('/home-eventos', HomeEventosController.index);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
+routes.get('/certificados/:nome_certificado', CertificadoController.index);
+
 /* ESPECTADOR */ routes.use(authMiddleware);
 routes.get('/me', SessionController.index);
 routes.put('/me', SessionController.update);
@@ -77,7 +79,5 @@ routes.put(
 routes.get('/users', UserController.index);
 routes.get('/admin-palestras', AdminPalestrasController.index);
 routes.post('/admin', AdminController.store);
-
-routes.get('/certificados/:nome_certificado', CertificadoController.index);
 
 export default routes;
