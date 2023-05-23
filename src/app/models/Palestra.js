@@ -17,6 +17,8 @@ class Palestra extends Model {
           type: Sequelize.VIRTUAL,
           get() {
             switch (this.ativo) {
+              case null:
+                return 'Aguardando aprovação';
               case false:
                 return 'Cancelado';
               case true:
@@ -25,7 +27,7 @@ class Palestra extends Model {
                 }
                 return 'Já aconteceu';
               default:
-                return 'Aguardando aprovação';
+                return 'Não identificado';
             }
           },
         },
