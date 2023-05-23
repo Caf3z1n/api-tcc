@@ -16,6 +16,7 @@ import HomeEventosController from './app/controllers/HomeEventosController';
 import AdminPalestrasController from './app/controllers/AdminPalestrasController';
 import PalestrasDisponiveisController from './app/controllers/PalestrasDisponiveisController';
 import CertificadoController from './app/controllers/CertificadoController';
+import AprovarCertificadosController from './app/controllers/AprovarCertificadosController';
 
 import authMiddleware from './app/middlewares/auth';
 import palestranteMiddleware from './app/middlewares/palestrante';
@@ -57,6 +58,16 @@ routes.put('/palestras/:palestraId', PalestraController.update);
 routes.get('/palestras', PalestraController.index);
 routes.delete('/palestras/:palestraId', PalestraController.delete);
 routes.post('/palestras/:palestraId', PalestraController.create);
+
+routes.get(
+  '/aprovar-certificados/:idPalestra',
+  AprovarCertificadosController.index
+);
+
+routes.post(
+  '/aprovar-certificados/:espectadorPalestraId',
+  AprovarCertificadosController.store
+);
 
 /* ADMIN */ routes.use(adminMiddleware);
 routes.put(

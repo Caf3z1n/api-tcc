@@ -17,14 +17,13 @@ class Palestra extends Model {
           type: Sequelize.VIRTUAL,
           get() {
             switch (this.ativo) {
+              case false:
+                return 'Cancelado';
               case true:
                 if (isBefore(new Date(), this.data_fim)) {
                   return 'Ativo';
                 }
                 return 'Já aconteceu';
-
-              case false:
-                return 'Cancelado';
               default:
                 return 'Aguardando aprovação';
             }
