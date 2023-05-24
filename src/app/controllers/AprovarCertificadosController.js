@@ -14,12 +14,6 @@ class AprovarCertificadosController {
       },
     });
 
-    if (palestra.id_palestrante !== req.userId) {
-      return res
-        .status(400)
-        .json({ error: 'usuário não é o palestrante dessa palestra' });
-    }
-
     const tempo_minino =
       (Math.abs(differenceInMinutes(palestra.data_inicio, palestra.data_fim)) /
         100) *
