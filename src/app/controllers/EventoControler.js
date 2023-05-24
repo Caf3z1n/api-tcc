@@ -38,7 +38,7 @@ class EventoController {
     const { paginaAtual = 1, itensPorPagina = 10, ativo = 'false' } = req.query;
 
     const where = {};
-    let order = [['data_inicio', 'DESC']];
+    let order = [['id', 'DESC']];
 
     if (ativo === 'true') {
       where.data_fim = { [Op.gte]: new Date() };

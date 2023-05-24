@@ -10,7 +10,7 @@ class AdminPalestrasController {
     const palestras = await Palestra.findAll({
       limit: itensPorPagina,
       offset: (paginaAtual - 1) * itensPorPagina,
-      order: [['data_inicio', 'DESC']],
+      order: [['id', 'DESC']],
       include: [
         {
           model: Evento,

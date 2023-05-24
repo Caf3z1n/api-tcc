@@ -50,7 +50,7 @@ class EspectadorPalestraController {
     const palestras = await Palestra.findAll({
       limit: itensPorPagina,
       offset: (paginaAtual - 1) * itensPorPagina,
-      order: [['data_inicio']],
+      order: [['id', 'DESC']],
       include: [
         {
           model: User,
