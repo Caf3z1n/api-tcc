@@ -3,6 +3,7 @@ import { differenceInMinutes } from 'date-fns';
 import Palestra from '../models/Palestra';
 import EspectadorPalestra from '../models/EspectadorPalestra';
 import User from '../models/User';
+import File from '../models/File';
 
 class AprovarCertificadosController {
   async index(req, res) {
@@ -32,6 +33,12 @@ class AprovarCertificadosController {
         {
           model: User,
           as: 'espectador',
+          include: [
+            {
+              model: File,
+              as: 'foto',
+            },
+          ],
         },
       ],
     });
@@ -43,7 +50,13 @@ class AprovarCertificadosController {
       }
     });
 
-    return res.json({ tempo_minino, palestra, espectadores_final });
+    return res.json({
+      duracao_palestra: Math.abs(
+        differenceInMinutes(palestra.data_inicio, palestra.data_fim)
+      ),
+      palestra,
+      espectadores_final,
+    });
   }
 
   async store(req, res) {
