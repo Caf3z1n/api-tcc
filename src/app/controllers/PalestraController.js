@@ -36,7 +36,7 @@ class PalestraController {
     const palestras = await Palestra.findAll({
       limit: itensPorPagina,
       offset: (paginaAtual - 1) * itensPorPagina,
-      order: [['data_inicio', 'DESC']],
+      order: [['id', 'DESC']],
       where: {
         id_palestrante: req.userId,
       },
