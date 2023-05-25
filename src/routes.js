@@ -17,6 +17,7 @@ import AdminPalestrasController from './app/controllers/AdminPalestrasController
 import PalestrasDisponiveisController from './app/controllers/PalestrasDisponiveisController';
 import CertificadoController from './app/controllers/CertificadoController';
 import AprovarCertificadosController from './app/controllers/AprovarCertificadosController';
+import EmailController from './app/controllers/EmailController';
 
 import authMiddleware from './app/middlewares/auth';
 import palestranteMiddleware from './app/middlewares/palestrante';
@@ -38,6 +39,8 @@ routes.get('/home-eventos', HomeEventosController.index);
 routes.post('/files', upload.single('file'), FileController.store);
 
 routes.get('/certificados/:nome_certificado', CertificadoController.index);
+
+routes.get('/email', EmailController.index);
 
 /* ESPECTADOR */ routes.use(authMiddleware);
 routes.get('/me', SessionController.index);
