@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 import User from '../models/User';
 
 class EmailController {
-  async index(req, res) {
+  async store(req, res) {
     const { email } = req.body;
 
     const user = await User.findOne({

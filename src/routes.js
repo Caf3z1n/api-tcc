@@ -40,7 +40,7 @@ routes.post('/files', upload.single('file'), FileController.store);
 
 routes.get('/certificados/:nome_certificado', CertificadoController.index);
 
-routes.get('/email', EmailController.index);
+routes.post('/email', EmailController.store);
 
 /* ESPECTADOR */ routes.use(authMiddleware);
 routes.get('/me', SessionController.index);
